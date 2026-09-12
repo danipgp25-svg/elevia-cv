@@ -11,7 +11,11 @@ function limpiar(texto?: string): string {
 
 
 export default function ATSView({ data }: Props) {
-  const { header: h } = data
+  const h = data?.header || ({} as any)
+  const perfil = data?.perfil || ''
+  const hab = data?.habilidades || { tecnicas: '', blandas: '', digitalesIA: '' }
+  const experiencia = data?.experiencia || []
+  const educacion = data?.educacion || []
 
   return (
     <div className="mx-auto w-full max-w-[800px] rounded-2xl bg-white p-8 font-mono text-sm shadow-panel sm:p-10">
@@ -28,18 +32,18 @@ export default function ATSView({ data }: Props) {
 
       <hr className="my-4 border-elevia-grayLine" />
       <p className="font-bold uppercase">Perfil profesional</p>
-      <p className="whitespace-pre-line">{limpiar(data.perfil) || '[Sin contenido]'}</p>
+      <p className="whitespace-pre-line">{limpiar(perfil) || '[Sin contenido]'}</p>
 
       <hr className="my-4 border-elevia-grayLine" />
       <p className="font-bold uppercase">Habilidades</p>
-      <p>Técnicas: {data.habilidades.tecnicas || '[Sin contenido]'}</p>
-      <p>Blandas: {data.habilidades.blandas || '[Sin contenido]'}</p>
-      <p>Digitales / IA: {data.habilidades.digitalesIA || '[Sin contenido]'}</p>
+      <p>Técnicas: {hab.tecnicas || '[Sin contenido]'}</p>
+      <p>Blandas: {hab.blandas || '[Sin contenido]'}</p>
+      <p>Digitales / IA: {hab.digitalesIA || '[Sin contenido]'}</p>
 
       <hr className="my-4 border-elevia-grayLine" />
       <p className="font-bold uppercase">Experiencia laboral</p>
-      {data.experiencia.length === 0 && <p>[Sin experiencia registrada]</p>}
-      {data.experiencia.map((exp) => (
+      {experiencia.length === 0 && <p>[Sin experiencia registrada]</p>}
+      {experiencia.map((exp) => (
         <div key={exp.id} className="mb-3">
           <p className="font-semibold">
             {exp.cargo || '[Cargo]'} — {exp.empresa || '[Empresa]'}
@@ -53,8 +57,8 @@ export default function ATSView({ data }: Props) {
 
       <hr className="my-4 border-elevia-grayLine" />
       <p className="font-bold uppercase">Educación y certificaciones</p>
-      {data.educacion.length === 0 && <p>[Sin educación registrada]</p>}
-      {data.educacion.map((ed) => (
+      {educacion.length === 0 && <p>[Sin educación registrada]</p>}
+      {educacion.map((ed) => (
         <div key={ed.id} className="mb-2">
           <p>
             {ed.titulo || '[Título]'} — {ed.institucion || '[Institución]'} ({ed.fecha})
@@ -64,3 +68,4 @@ export default function ATSView({ data }: Props) {
     </div>
   )
 }
+

@@ -35,24 +35,26 @@ function extraerPalabrasClave(texto: string): string[] {
 
 function textoCompletoCV(data: CVData): string {
   const partes = [
-    data.header.cargoObjetivo,
-    data.perfil,
-    data.habilidades.tecnicas,
-    data.habilidades.blandas,
-    data.habilidades.digitalesIA,
-    ...data.experiencia.map((e) => `${e.cargo} ${e.descripcion}`),
-    ...data.educacion.map((e) => `${e.titulo} ${e.detalle}`),
+    data?.header?.cargoObjetivo || '',
+    data?.perfil || '',
+    data?.habilidades?.tecnicas || '',
+    data?.habilidades?.blandas || '',
+    data?.habilidades?.digitalesIA || '',
+    ...(data?.experiencia || []).map((e) => `${e.cargo || ''} ${e.descripcion || ''}`),
+    ...(data?.educacion || []).map((e) => `${e.titulo || ''} ${e.detalle || ''}`),
   ]
   return partes.join(' ')
 }
 
 function listaHabilidades(data: CVData): string[] {
-  const texto = `${data.habilidades.tecnicas}, ${data.habilidades.blandas}, ${data.habilidades.digitalesIA}`
+  const hab = data?.habilidades || ({} as any)
+  const texto = `${hab.tecnicas || ''}, ${hab.blandas || ''}, ${hab.digitalesIA || ''}`
   return texto
     .split(/[,;\n]/)
     .map((s) => limpiarPalabra(s.trim()))
     .filter((s) => s.length > 0)
 }
+
 
 export function compararConOferta(data: CVData, oferta: string): ResultadoComparacion | null {
   if (!oferta.trim()) return null

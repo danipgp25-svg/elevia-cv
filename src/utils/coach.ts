@@ -34,12 +34,12 @@ export function generarSugerencias(data: CVData): CoachSugerencia[] {
   const sugerencias: CoachSugerencia[] = []
 
   // --- Encabezado ---
-  const h = data.header
+  const h = data?.header || ({} as any)
   const camposFaltantes: string[] = []
-  if (!h.correo.trim()) camposFaltantes.push('correo')
-  if (!h.telefono.trim()) camposFaltantes.push('teléfono')
-  if (!h.linkedin.trim()) camposFaltantes.push('LinkedIn')
-  if (!h.cargoObjetivo.trim()) camposFaltantes.push('cargo objetivo')
+  if (!(h.correo || '').trim()) camposFaltantes.push('correo')
+  if (!(h.telefono || '').trim()) camposFaltantes.push('teléfono')
+  if (!(h.linkedin || '').trim()) camposFaltantes.push('LinkedIn')
+  if (!(h.cargoObjetivo || '').trim()) camposFaltantes.push('cargo objetivo')
 
   if (camposFaltantes.length > 0) {
     sugerencias.push({
@@ -58,7 +58,7 @@ export function generarSugerencias(data: CVData): CoachSugerencia[] {
   }
 
   // --- Perfil profesional ---
-  const perfil = data.perfil.trim()
+  const perfil = (data?.perfil || '').trim()
   if (perfil.length === 0) {
     sugerencias.push({
       id: nextId(),
@@ -94,7 +94,7 @@ export function generarSugerencias(data: CVData): CoachSugerencia[] {
   }
 
   // --- Habilidades ---
-  const { tecnicas, blandas, digitalesIA } = data.habilidades
+  const { tecnicas = '', blandas = '', digitalesIA = '' } = data?.habilidades || {}
   if (!digitalesIA.trim()) {
     sugerencias.push({
       id: nextId(),
@@ -129,7 +129,8 @@ export function generarSugerencias(data: CVData): CoachSugerencia[] {
   }
 
   // --- Experiencia laboral ---
-  if (data.experiencia.length === 0) {
+  const experiencias = data?.experiencia || []
+  if (experiencias.length === 0) {
     sugerencias.push({
       id: nextId(),
       tipo: 'sugerencia',
@@ -138,9 +139,9 @@ export function generarSugerencias(data: CVData): CoachSugerencia[] {
     })
   }
 
-  data.experiencia.forEach((exp, index) => {
-    const desc = exp.descripcion.trim()
-    const etiqueta = exp.cargo ? exp.cargo : `Experiencia ${index + 1}`
+  experiencias.forEach((exp, index) => {
+    const desc = (exp?.descripcion || '').trim()
+    const etiqueta = exp?.cargo ? exp.cargo : `Experiencia ${index + 1}`
     if (desc.length === 0) return
 
     if (tieneAlguna(desc, VERBOS_RESPONSABILIDAD)) {
@@ -181,7 +182,7 @@ export function generarSugerencias(data: CVData): CoachSugerencia[] {
   })
 
   // --- Educación ---
-  if (data.educacion.length === 0) {
+  if ((data?.educacion || []).length === 0) {
     sugerencias.push({
       id: nextId(),
       tipo: 'sugerencia',
@@ -192,3 +193,4 @@ export function generarSugerencias(data: CVData): CoachSugerencia[] {
 
   return sugerencias
 }
+

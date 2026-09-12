@@ -14,7 +14,19 @@ function separarLista(texto: string): string[] {
 }
 
 export default function Preview({ data }: Props) {
-  const { header: h, estilo: est } = data
+  const h = data?.header || ({} as any)
+  const est = data?.estilo || {
+    fontFamily: 'font-option-inter',
+    fontSize: 15,
+    colorTexto: '#1E1A2B',
+    colorTitulos: '#4C2A85',
+    colorResaltado: '#22B8A0',
+    colorPrincipal: '#4C2A85',
+  }
+  const perfil = data?.perfil || ''
+  const hab = data?.habilidades || { tecnicas: '', blandas: '', digitalesIA: '' }
+  const experiencia = data?.experiencia || []
+  const educacion = data?.educacion || []
 
   return (
     <div
@@ -42,28 +54,28 @@ export default function Preview({ data }: Props) {
       </header>
 
       {/* Perfil */}
-      {data.perfil.trim() && (
+      {perfil.trim() && (
         <Seccion titulo="Perfil profesional" color={est.colorTitulos}>
-          <p className="leading-relaxed">{renderRichText(data.perfil)}</p>
+          <p className="leading-relaxed">{renderRichText(perfil)}</p>
         </Seccion>
       )}
 
       {/* Habilidades */}
-      {(data.habilidades.tecnicas || data.habilidades.blandas || data.habilidades.digitalesIA) && (
+      {(hab.tecnicas || hab.blandas || hab.digitalesIA) && (
         <Seccion titulo="Habilidades" color={est.colorTitulos}>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-            <ListaHabilidades titulo="Técnicas" items={separarLista(data.habilidades.tecnicas)} color={est.colorResaltado} />
-            <ListaHabilidades titulo="Blandas" items={separarLista(data.habilidades.blandas)} color={est.colorResaltado} />
-            <ListaHabilidades titulo="Digitales e IA" items={separarLista(data.habilidades.digitalesIA)} color={est.colorResaltado} />
+            <ListaHabilidades titulo="Técnicas" items={separarLista(hab.tecnicas || '')} color={est.colorResaltado} />
+            <ListaHabilidades titulo="Blandas" items={separarLista(hab.blandas || '')} color={est.colorResaltado} />
+            <ListaHabilidades titulo="Digitales e IA" items={separarLista(hab.digitalesIA || '')} color={est.colorResaltado} />
           </div>
         </Seccion>
       )}
 
       {/* Experiencia */}
-      {data.experiencia.length > 0 && (
+      {experiencia.length > 0 && (
         <Seccion titulo="Experiencia laboral" color={est.colorTitulos}>
           <div className="flex flex-col gap-4">
-            {data.experiencia.map((exp) => (
+            {experiencia.map((exp) => (
               <div key={exp.id}>
                 <div className="flex flex-wrap items-baseline justify-between gap-x-3">
                   <p className="font-semibold">{exp.cargo || 'Cargo'}</p>
@@ -80,10 +92,10 @@ export default function Preview({ data }: Props) {
       )}
 
       {/* Educación */}
-      {data.educacion.length > 0 && (
+      {educacion.length > 0 && (
         <Seccion titulo="Educación y certificaciones" color={est.colorTitulos}>
           <div className="flex flex-col gap-3">
-            {data.educacion.map((ed) => (
+            {educacion.map((ed) => (
               <div key={ed.id}>
                 <div className="flex flex-wrap items-baseline justify-between gap-x-3">
                   <p className="font-semibold">{ed.titulo || 'Título'}</p>
@@ -99,6 +111,7 @@ export default function Preview({ data }: Props) {
     </div>
   )
 }
+
 
 function Seccion({ titulo, color, children }: { titulo: string; color: string; children: ReactNode }) {
   return (
