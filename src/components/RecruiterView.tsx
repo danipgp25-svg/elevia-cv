@@ -56,10 +56,10 @@ export default function RecruiterView({ data }: Props) {
       </Bloque>
 
       <Bloque titulo="Logros destacados">
-        {data.experiencia.some((e) => /\d/.test(e.descripcion)) ? (
+        {data.experiencia.some((e) => Boolean(e.descripcion && /\d/.test(e.descripcion))) ? (
           <ul className="list-disc space-y-1 pl-5 text-sm">
             {data.experiencia
-              .filter((e) => /\d/.test(e.descripcion))
+              .filter((e) => Boolean(e.descripcion && /\d/.test(e.descripcion)))
               .slice(0, 3)
               .map((e) => (
                 <li key={e.id}>{renderRichText(e.descripcion)}</li>
@@ -69,6 +69,7 @@ export default function RecruiterView({ data }: Props) {
           <p className="text-sm text-elevia-ink/50">Aún no hay logros cuantificados en tu experiencia.</p>
         )}
       </Bloque>
+
     </div>
   )
 }

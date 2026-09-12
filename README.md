@@ -66,15 +66,31 @@ Si prefieres usar GitHub CLI:
 gh repo create tu-repositorio --public --source=. --remote=origin --push
 ```
 
-### Publicar en tu página web
+### Publicar en GitHub Pages
 
-Cualquier plataforma de hosting estático funciona (Vercel, Netlify, GitHub Pages). El proceso general es:
+Este proyecto utiliza `base: './'` en `vite.config.ts`, por lo que está listo para desplegar en GitHub Pages sin problemas de página en blanco por rutas de scripts o estilos (`404`).
 
-1. Conectar el repositorio de GitHub a la plataforma elegida.
-2. Configurar el comando de build: `npm run build`.
-3. Configurar la carpeta de salida: `dist`.
+**Opción A: Usar GitHub Actions (Recomendado)**
+1. En tu repositorio en GitHub, ve a **Settings** > **Pages**.
+2. En **Source**, selecciona **GitHub Actions**.
+3. GitHub creará la acción automáticamente para proyectos con Vite (o puedes usar la plantilla estática).
+
+**Opción B: Despliegue con paquete `gh-pages`**
+```bash
+npm install -D gh-pages
+```
+Añade en los `scripts` de tu `package.json`:
+```json
+"predeploy": "npm run build",
+"deploy": "gh-pages -d dist"
+```
+Y ejecuta:
+```bash
+npm run deploy
+```
 
 ## Preparado para conectar una API de IA
+
 
 El proyecto funciona hoy 100% con reglas locales (ver `src/utils/coach.ts`, `src/utils/scoring.ts` y `src/utils/jobMatch.ts`). Cuando quieras usar un modelo de IA para enriquecer las recomendaciones, el archivo `src/utils/aiIntegration.ts` incluye un ejemplo comentado de cómo estructurar esa llamada sin tener que rediseñar la interfaz.
 

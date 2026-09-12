@@ -28,9 +28,16 @@ export const defaultCVData: CVData = {
   },
 }
 
+function generateUniqueId(): string {
+  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+    return crypto.randomUUID()
+  }
+  return Math.random().toString(36).substring(2) + Date.now().toString(36)
+}
+
 export function nuevaExperiencia() {
   return {
-    id: crypto.randomUUID(),
+    id: generateUniqueId(),
     cargo: '',
     empresa: '',
     fechaInicio: '',
@@ -42,10 +49,11 @@ export function nuevaExperiencia() {
 
 export function nuevaEducacion() {
   return {
-    id: crypto.randomUUID(),
+    id: generateUniqueId(),
     titulo: '',
     institucion: '',
     fecha: '',
     detalle: '',
   }
 }
+

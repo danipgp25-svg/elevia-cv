@@ -4,9 +4,11 @@ interface Props {
   data: CVData
 }
 
-function limpiar(texto: string): string {
+function limpiar(texto?: string): string {
+  if (!texto) return ''
   return texto.replace(/\*\*|__|\*/g, '')
 }
+
 
 export default function ATSView({ data }: Props) {
   const { header: h } = data
