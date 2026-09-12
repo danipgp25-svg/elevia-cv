@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  @apply bg-elevia-gray text-elevia-ink font-body antialiased;
+}
+
+/* Font choices offered to the user inside the CV editor */
+.font-option-inter { font-family: 'Inter', sans-serif; }
+.font-option-sora { font-family: 'Sora', sans-serif; }
+.font-option-georgia { font-family: Georgia, 'Times New Roman', serif; }
+.font-option-mono { font-family: 'Courier New', monospace; }
+
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-thumb { background: #C9C2E4; border-radius: 999px; }
+::-webkit-scrollbar-track { background: transparent; }
+
+@media print {
+  body * { visibility: hidden; }
+  #cv-preview, #cv-preview * { visibility: visible; }
+  #cv-preview { position: absolute; top: 0; left: 0; width: 100%; }
+}
